@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_randomcolor: ^0.1.3
+  flutter_randomcolor: ^1.0.0
   flutter_markdown: ^0.4.4
   google_fonts: ^1.1.0
 

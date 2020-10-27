@@ -12,6 +12,10 @@ class SimilarColor extends StatefulWidget {
 class _SimilarColorState extends State<SimilarColor> {
   Map<String, List<Color>> colors;
   List<Color> testColors;
+  List<Color> multiColors;
+  List<Color> lightColors;
+  List<Color> darkColors;
+  List<Color> randomColors;
 
   @override
   void initState() {
@@ -27,6 +31,10 @@ class _SimilarColorState extends State<SimilarColor> {
       "monochrome": getMonochromeColors(),
     };
     testColors = getGreenColors();
+    multiColors = getMultiColors();
+    lightColors = getLightColors();
+    darkColors = getDarkColors();
+    randomColors = getRandomColors();
   }
 
   @override
@@ -35,7 +43,10 @@ class _SimilarColorState extends State<SimilarColor> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          SizedBox(
+            height: 20,
+          ),
+          SelectableText(
             "Similar color",
             style: TextStyle(
               fontSize: 25,
@@ -43,12 +54,16 @@ class _SimilarColorState extends State<SimilarColor> {
             ),
           ),
           ..._getColors(),
+          _multipleColors(),
+          _lightColors(),
+          _darkColors(),
+          _randomColors()
         ],
       ),
     );
   }
 
-  Widget _colorBuilder(List<String> codes, List<Color> colors) {
+  Widget _colorBuilder(String codes, List<Color> colors) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,10 +77,8 @@ class _SimilarColorState extends State<SimilarColor> {
 
   List<Widget> _getColors() {
     return colors.keys.map((key) {
-      List<String> colorCode = [
-        "Options options = Options(count:18, colorType:ColorType.$key);",
-        "var color = RandomColor(options:options);"
-      ];
+      var colorCode =
+          "Options options = Options(count:18, colorType:ColorType.$key);\nvar color = RandomColor(options:options);";
       List<Color> _color = colors[key];
       // print('$key => $_color');
       return _colorBuilder(
@@ -73,6 +86,105 @@ class _SimilarColorState extends State<SimilarColor> {
         _color,
       );
     }).toList();
+  }
+
+  Widget _multipleColors() {
+    var colorCode =
+        "Options options = Options(count:27, colorType:[ColorType.blue, ColorType.green]);\nvar color = RandomColor(options:options);";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        SelectableText(
+          "Multiple colors",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        _colorBuilder(
+          colorCode,
+          multiColors,
+        )
+      ],
+    );
+  }
+
+// Light Colors
+  Widget _lightColors() {
+    var colorCode =
+        "Options options = Options(format: Format.rgbArray, count: 27,luminosity: Luminosity.light);\nvar color = RandomColor(options:options);";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        SelectableText(
+          "Light colors",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        _colorBuilder(
+          colorCode,
+          lightColors,
+        )
+      ],
+    );
+  }
+
+  // Light Colors
+  Widget _darkColors() {
+    var colorCode =
+        "Options options = Options(count: 27,luminosity: Luminosity.light);\nvar color = RandomColor(options:options);";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        SelectableText(
+          "Dark colors",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        _colorBuilder(
+          colorCode,
+          darkColors,
+        )
+      ],
+    );
+  }
+
+  // Random Colors
+  Widget _randomColors() {
+    var colorCode =
+        "Options options = Options(count: 27,luminosity: Luminosity.random, colorType: ColorType.random);\nvar color = RandomColor(options:options);";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        SelectableText(
+          "Truely Random colors",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        _colorBuilder(
+          colorCode,
+          randomColors,
+        )
+      ],
+    );
   }
 
   List<Color> getGreenColors() {
@@ -144,11 +256,56 @@ class _SimilarColorState extends State<SimilarColor> {
     List color = RandomColor.getColor(options);
     return ColorUtils.getColorByRGBArrays(color);
   }
+
   List<Color> getMonochromeColors() {
     var options = Options(
       format: Format.rgbArray,
       count: 18,
       colorType: ColorType.monochrome,
+    );
+    List color = RandomColor.getColor(options);
+    return ColorUtils.getColorByRGBArrays(color);
+  }
+
+  List<Color> getMultiColors() {
+    var options = Options(
+      format: Format.rgbArray,
+      count: 27,
+      colorType: [ColorType.blue, ColorType.green],
+    );
+    List color = RandomColor.getColor(options);
+    return ColorUtils.getColorByRGBArrays(color);
+  }
+
+  // Light color
+  List<Color> getLightColors() {
+    var options = Options(
+      format: Format.rgbArray,
+      count: 27,
+      luminosity: Luminosity.light,
+    );
+    List color = RandomColor.getColor(options);
+    return ColorUtils.getColorByRGBArrays(color);
+  }
+
+  // Dark color
+  List<Color> getDarkColors() {
+    var options = Options(
+      format: Format.rgbArray,
+      count: 27,
+      luminosity: Luminosity.dark,
+    );
+    List color = RandomColor.getColor(options);
+    return ColorUtils.getColorByRGBArrays(color);
+  }
+
+  // Truely Random color
+  List<Color> getRandomColors() {
+    var options = Options(
+      format: Format.rgbArray,
+      count: 27,
+      luminosity: Luminosity.random,
+      colorType: ColorType.random,
     );
     List color = RandomColor.getColor(options);
     return ColorUtils.getColorByRGBArrays(color);

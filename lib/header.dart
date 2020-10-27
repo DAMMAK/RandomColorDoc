@@ -5,11 +5,11 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        SelectableText(
           "Random Color",
           style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
         ),
-        Text(
+        SelectableText(
           "A color generator for dart",
           style: TextStyle(
             color: Colors.grey,
