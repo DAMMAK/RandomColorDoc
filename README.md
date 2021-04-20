@@ -1,6 +1,6 @@
 # randcomcolor_doc
 
-A new Flutter project.
+A Flutter Web Documentation project for RandomColor. https://randomcolor.dammak.dev/#/
 
 ## Getting Started
 
